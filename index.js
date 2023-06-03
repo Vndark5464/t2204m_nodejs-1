@@ -2,7 +2,7 @@ const e = require("express");
 const express = require("express");
 const app = express();
 const database = require("./src/database");
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 app.listen(PORT,()=>{
     console.log("server is running...");
 })
@@ -10,6 +10,21 @@ app.set("view engine","ejs");
 app.use(express.static("public"));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+
+// session
+const session = require("express-session");
+app.use(
+    session({
+        resave: true,
+        saveUninitialized:true,
+        secret: "t2203e",
+        cookie: {
+            maxAge: 3600000, // miliseconds
+           // secure:true
+        }
+    })
+);
+
 
 app.get("/",function(req,res){
     const Product = require("./src/models/product");
@@ -34,5 +49,5 @@ app.get("/detail",function(req,res){
 const productRoutes = require("./src/routes/product.route");
 app.use("/products",productRoutes);
 //AUTH
-const authRouters = require("./src/routes/auth.route");
-app.use("/auth",authRouters);
+const authRoutes = require("./src/routes/auth.route");
+app.use("/auth",authRoutes);
