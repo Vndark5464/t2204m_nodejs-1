@@ -1,8 +1,8 @@
-const e = require("express");
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const database = require("./src/database");
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT,()=>{
     console.log("server is running...");
 })
@@ -17,10 +17,10 @@ app.use(
     session({
         resave: true,
         saveUninitialized:true,
-        secret: "t2203e",
+        secret: process.env.SESSION_SECRET,
         cookie: {
             maxAge: 3600000, // miliseconds
-           // secure:true
+            secure: false
         }
     })
 );
